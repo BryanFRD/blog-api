@@ -17,5 +17,11 @@
   $controllerClassName = ucfirst($controllerName)."Controller";
   $controller = new $controllerClassName($route);
   
-  echo $controller->action;
+  $response = $controller->action;
+  if(!isset($response)){
+    header('HTTP/1.0 404 Not Found');
+    die;
+  }
+  
+  echo $response;
 ?>
