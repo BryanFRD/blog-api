@@ -17,6 +17,5 @@
   $controllerClassName = ucfirst($controllerName)."Controller";
   $controller = new $controllerClassName($route);
   
-  echo $controllerClassName . '<br/>';
-  echo implode('-', $route);
+  echo $controller->action;
 ?>
