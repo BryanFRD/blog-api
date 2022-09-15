@@ -33,7 +33,10 @@ class TagController {
   }
   
   public function getAll(){
-    return 'Select all rows from table tag';
+    $dbs = new DatabaseService('tag');
+    $rows = $dbs->selectAll();
+    
+    return $rows;
   }
   
   public function getOne($id){

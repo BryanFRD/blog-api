@@ -1,6 +1,8 @@
 <?php
   header('Access-Control-Allow-Origin: http://localhost:3000');
   
+  require_once 'services/database.service.php';
+  
   $route = trim($_SERVER['REQUEST_URI'], '/');
   $route = filter_var($route, FILTER_SANITIZE_URL);
   $route = explode('/', $route);
