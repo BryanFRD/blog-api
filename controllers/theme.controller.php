@@ -40,7 +40,10 @@ class ThemeController {
   }
   
   public function getOne($id){
-    return "Select row with id = $id in table theme";
+    $dbs = new DatabaseService('theme');
+    $rows = $dbs->selectOne($id);
+    
+    return $rows;
   }
   
   public function create(){

@@ -40,7 +40,10 @@ class TagController {
   }
   
   public function getOne($id){
-    return "Select row with id = $id in table tag";
+    $dbs = new DatabaseService('tag');
+    $rows = $dbs->selectOne($id);
+    
+    return $rows;
   }
   
   public function create(){

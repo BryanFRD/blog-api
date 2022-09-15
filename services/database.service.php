@@ -38,11 +38,20 @@ class DatabaseService {
   }
   
   public function selectAll(){
-    $sql = "SELECT * FROM $this->table WHERE table_schema = ?";
+    $sql = "SELECT * FROM $this->table WHERE is_deleted = ?";
     $resp = $this->query($sql, [0]);
     $rows = $resp->statement->fetchAll(PDO::FETCH_COLUMN);
     
     return $rows;
+  }
+  public function selectOne($id){
+    $sql = "SELECT * FROM $this->table WHERE is_deleted = ? AND Id__this->table = ?";
+    $resp = $this->query($sql, [0, $id]);
+    $rows = $resp->statement->fetchAll(PDO::FETCH_COLUMN);
+    
+    $row = $resp->result && count($rows) == 1 ? $rows[0] : null;
+    
+    return $row;
   }
   
 }
