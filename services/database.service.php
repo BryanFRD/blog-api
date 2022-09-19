@@ -10,12 +10,14 @@ class DatabaseService {
   
   private function connect(){
     if(self::$connection == null){
-      $host = 'localhost';
-      $port = '3306';
-      $dbName = 'db_blog';
+      $dbConfig = $_ENV['config']->db;
+      
+      $host = $dbConfig->host;
+      $port = $dbConfig->port;
+      $dbName = $dbConfig->dbName;
       $dsn = "mysql:host=$host;port=$port;dbname=$dbName";
-      $user = 'root';
-      $pass = '';
+      $user = $dbConfig->user;
+      $pass = $dbConfig->pass;
       
       try {
         $db_connection = new PDO($dsn, $user, $pass, array(
