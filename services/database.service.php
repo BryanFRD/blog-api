@@ -47,7 +47,7 @@ class DatabaseService {
     return $rows;
   }
   public function selectOne($id){
-    $sql = "SELECT * FROM $this->table WHERE is_deleted = ? AND Id__this->table = ?";
+    $sql = "SELECT * FROM $this->table WHERE is_deleted = ? AND Id_$this->table = ?";
     $resp = $this->query($sql, [0, $id]);
     $rows = $resp->statement->fetchAll(PDO::FETCH_COLUMN);
     

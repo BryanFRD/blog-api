@@ -1,3 +1,5 @@
 <?php
-class AppuserController extends DatabaseController {}
-?>
+
+class AppuserController extends DatabaseController {}
+
+?>
