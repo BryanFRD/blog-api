@@ -2,7 +2,7 @@
   header('Access-Control-Allow-Origin: http://localhost:3000');
   
   $_ENV['current'] = 'dev';
-  $config = file_get_contents('config/'.$_ENV['current'].'.config.js');
+  $config = file_get_contents('config/'.$_ENV['current'].'.config.json');
   $_ENV['config'] = json_decode($config);
   
   require_once 'services/database.service.php';
@@ -23,7 +23,7 @@
       $controllerFile = "controllers/$tableName.controller.php";
       if(!file_exists($controllerFile)){
         $fileContent = 
-        "<?phpclass\n\r".ucfirst($tableName)."Controller extends DatabaseController {}\n\r?>";
+        "<?php\n\rclass ".ucfirst($tableName)."Controller extends DatabaseController {}\n\r?>";
         file_put_contents($controllerFile, $fileContent);
         
         echo ucfirst($tableName)."Controller created!\n\r";
