@@ -10,6 +10,13 @@ class ArticleController extends DatabaseController {
       $row->appuser = count($appusers) == 1 ? array_shift($appusers) : null;
     }
     
+    if(isset($sub_rows['theme'])){
+      $themes = array_filter($sub_rows['theme'], function($item) use ($row) {
+        return $item->Id_theme == $row->Id_theme;
+      });
+      $row->themes = count($themes) == 1 ? array_shift($themes) : null;
+    }
+    
     if(isset($sub_rows['image'])){
       $images = array_filter($sub_rows['image'], function($item) use ($row){
         return $item->Id_article == $row->Id_article;
@@ -25,6 +32,15 @@ class ArticleController extends DatabaseController {
       });
       if(isset($comments)){
         $row->comments_list = $comments;
+      }
+    }
+    
+    if(isset($sub_rows['tag'])){
+      $tags = array_values(array_filter($sub_rows['tag'], function($item) use ($row){
+        return $item->Id_article == $row->Id_article;
+      }));
+      if(isset($tags)){
+        $row->tags_list = array_column($tags, 'tag');
       }
     }
   }

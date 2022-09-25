@@ -56,6 +56,14 @@ class DatabaseService {
     return $row;
   }
   
+  public function selectWhere($where = null){
+    $sql = "SELECT * FROM $this->table".(isset($where) ?? " WHERE $where").";";
+    $resp = $this->query($sql, [0]);
+    $rows = $resp->statment->fetchAll(PDO::FETCH_CLASS);
+    
+    return $rows;
+  }
+  
 }
 
 ?>
