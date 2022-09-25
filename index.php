@@ -17,7 +17,7 @@
   if($_ENV['current'] == 'dev' && $controllerName == 'init'){
     $dbs = new DatabaseService(null);
     $query_resp = $dbs->query('SELECT table_name FROM information_schema.tables WHERE table_schema = ?', ['db_blog']);
-    $rows = $query_resp->statement->fetchAll(PDO::FETCH_COLUMN);
+    $rows = $query_resp->statment->fetchAll(PDO::FETCH_COLUMN);
     
     foreach($rows as $tableName){
       $controllerFile = "controllers/$tableName.controller.php";
@@ -49,5 +49,5 @@
     die;
   }
   
-  echo $response;
+  echo json_encode($response);
 ?>

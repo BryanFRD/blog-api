@@ -36,20 +36,20 @@ class DatabaseService {
   public function query($sql, $params){
     $statment = $this->connect()->prepare($sql);
     $result = $statment->execute($params);
-    return (object)['result' => $result, 'statement' => $statment];
+    return (object)['result' => $result, 'statment' => $statment];
   }
   
   public function selectAll(){
     $sql = "SELECT * FROM $this->table WHERE is_deleted = ?";
     $resp = $this->query($sql, [0]);
-    $rows = $resp->statement->fetchAll(PDO::FETCH_COLUMN);
+    $rows = $resp->statment->fetchAll(PDO::FETCH_CLASS);
     
     return $rows;
   }
   public function selectOne($id){
     $sql = "SELECT * FROM $this->table WHERE is_deleted = ? AND Id_$this->table = ?";
     $resp = $this->query($sql, [0, $id]);
-    $rows = $resp->statement->fetchAll(PDO::FETCH_COLUMN);
+    $rows = $resp->statment->fetchAll(PDO::FETCH_CLASS);
     
     $row = $resp->result && count($rows) == 1 ? $rows[0] : null;
     
