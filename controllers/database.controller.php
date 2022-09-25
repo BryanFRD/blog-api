@@ -1,6 +1,6 @@
 <?php 
   
-  class DatabaseController {
+abstract class DatabaseController {
     
     public function __construct($params){
       $id = array_shift($params);
@@ -24,6 +24,14 @@
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $this->action = $this->create();
       }
+      if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($id)){
+        if($id == 0){
+          $this->action = $this->getAllWith($this->body['with']);
+        }
+        if($id > 0){
+          $this->action = $this->getOneWith($id, $this->body['with']);
+        }
+      }
       if($_SERVER['REQUEST_METHOD'] == 'PUT' && isset($id)){
         $this->action = $this->update($id);
       }
@@ -35,9 +43,28 @@
       }
     }
     
+    public abstract function affectDataToRow(&$row, $sub_rows);
+    
     public function getAll(){
       $dbs = new DatabaseService($this->table);
       $rows = $dbs->selectAll();
+      
+      return $rows;
+    }
+    
+    public function getAllWith($with){
+      $rows = $this->getAll();
+      $sub_rows = [];
+      
+      foreach($with as $table){
+        $dbs = new DatabaseService($table);
+        $table_rows = $dbs->selectAll();
+        $sub_rows[$table] = $table_rows;
+      }
+      
+      foreach($rows as $row){
+        $this->affectDataToRow($row, $sub_rows);
+      }
       
       return $rows;
     }
@@ -47,6 +74,19 @@
       $rows = $dbs->selectOne($id);
       
       return $rows;
+    }
+    
+    public function getOneWith($id, $with){
+      $row = $this->getOne($id);
+      
+      foreach($with as $table){
+        $dbs = new DatabaseService($table);
+        $table_rows = $dbs->selectAll();
+        $sub_rows[$table] = $table_rows;
+      }
+      
+      $this->affectDataToRow($row, $sub_rows);
+      return $row;
     }
     
     public function create(){
