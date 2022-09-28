@@ -131,7 +131,10 @@ abstract class DatabaseController {
     }
     
     public function create(){
-      return 'Insert a new row in table '.$this->table.' : ' . urldecode(http_build_query($this->body, '', ', '));
+      $dbs = new DatabaseService($this->table);
+      $row = $dbs->insertOne($this->body);
+      
+      return $row;
     }
     
     public function update($id){

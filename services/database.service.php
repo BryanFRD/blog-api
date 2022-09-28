@@ -64,6 +64,29 @@ class DatabaseService {
     return $rows;
   }
   
+  public function insertOne($body = []){
+    $columns = "";
+    $values = "";
+    
+    foreach($body as $key => $value){
+      $columns .= $key . ",";
+      $values .= "?,";
+    }
+    
+    
+    $sql = "INSERT INTO $this->table (".trim($columns, ',').") VALUES (".trim($values, ',').")";
+    $resp = $this->query($sql, array_values($body));
+    $row = $resp->statment;
+    
+    return $row;
+  }
+  
+  private function buildInnerSQL($body){
+    foreach($body as $k => $v){
+      
+    }
+  }
+  
 }
 
 ?>
