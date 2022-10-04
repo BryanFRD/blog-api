@@ -133,20 +133,31 @@ abstract class DatabaseController {
     public function create(){
       $dbs = new DatabaseService($this->table);
       $row = $dbs->insertOne($this->body);
-      
       return $row;
     }
-    
+
     public function update($id){
-      return "Update row with id = $id in table $this->table : " . urldecode(http_build_query($this->body, '', ', '));
+        $dbs = new DatabaseService($this->table);
+        if($id != $this->body["Id_$this->table"]){
+            return false;
+        }
+        $row = $dbs->updateOne($this->body);
+        return $row;
     }
-    
+
     public function softDelete($id){
-      return "Delete (soft) row with id = $id in table $this->table";
+        $dbs = new DatabaseService($this->table);
+        $row = $dbs->updateOne(["Id_$this->table" => $id,"is_deleted" => 1]);
+        if(isset($row) && $row == false){
+            return false;
+        }
+        return !isset($row);
     }
-    
+
     public function hardDelete($id){
-      return "Delete (hard) row with id = $id in table $this->table";
+        $dbs = new DatabaseService($this->table);
+        $row = $dbs->deleteOne(["Id_$this->table" => $id]);
+        return $row;
     }
     
   }

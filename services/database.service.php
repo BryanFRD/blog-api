@@ -95,7 +95,7 @@ class DatabaseService {
     return $row;
   }
   
-  public function update($body){
+  public function updateOne($body){
     $set = "";
     $valuesToBind = array();
     $id = $body["Id_$this->table"];
