@@ -98,6 +98,45 @@ class DatabaseService {
   public function update($body){
     $set = "";
     $valuesToBind = array();
+    $id = $body["Id_$this->table"];
+    
+    if(isset($body["Id_$this->table"])){
+      unset($body["Id_$this->table"]);
+    }
+    
+    foreach($body as $key => $value){
+      $set .= $k."=?,";
+      array_push($valuesToBind, $v);
+    }
+    
+    $set = trim($set, ",");
+    $where = "Id_$this->table = ?";
+    array_push($valuesToBind, $id);
+    
+    $sql = "UPDATE $this->table SET $set WHERE $where";
+    $resp = $this->query($sql, $valuesToBind);
+    
+    if($resp->result){
+      $row = $this->selectOne($id);
+      return $row;
+    }
+    
+    return false;
+  }
+  
+  public function deleteOne($body){
+    $id = $body["Id_$this->table"];
+    $where = "Id_$this->table = ?";
+    
+    $sql = "DELETE FROM $this->table WHERE $where";
+    $resp = $this->query($sql, [$id]);
+    
+    if($resp->result && $resp->statment->rowCount() <= 1){
+      $row = $this->selectOne($id);
+      return !isset($row);
+    }
+    
+    return false;
   }
   
 }
