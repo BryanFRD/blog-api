@@ -43,16 +43,19 @@ class DatabaseService {
     $sql = "DESCRIBE $this->table";
     $resp = $this->query($sql, []);
     $columns = $resp->statment->fetchAll(PDO::FETCH_COLUMN);
+    
+    return $columns;
   }
   
-  public function getTables(){
+  public static function getTables(){
     $dbs = new DatabaseService(null);
     $sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = ?";
     $resp = $dbs->query($sql, [$_ENV['config']->db->dbName]);
     $tables = $resp->statment->fetchAll(PDO::FETCH_COLUMN);
     
-    return $tables
+    return $tables;
   }  
+  
   public function selectAll(){
     $sql = "SELECT * FROM $this->table WHERE is_deleted = ?";
     $resp = $this->query($sql, [0]);
